@@ -201,7 +201,7 @@
       line-height: 1.6;
     }
 
-    /* 专业技能 取消居中，恢复左对齐 */
+    /* 专业技能 左对齐 */
     .skill-list {
       display: flex;
       flex-direction: column;
@@ -231,7 +231,7 @@
       white-space: nowrap;
     }
 
-    /* 作品集网格 + 图片H5不缩小、不变形 */
+    /* 作品集图片 */
     .grid-img {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -326,19 +326,6 @@
       font-size: 15px;
       margin: 8px 0;
       color: #333;
-    }
-    .close-btn {
-      margin-top: 18px;
-      padding: 6px 18px;
-      border: none;
-      border-radius: 20px;
-      background: #f0f0f0;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background 0.2s;
-    }
-    .close-btn:hover {
-      background: #e0e0e0;
     }
 
     /* 手机适配 */
@@ -529,19 +516,17 @@
   <div class="side-btn" data-type="wechat"><i class="fab fa-weixin"></i></div>
 </div>
 
-<!-- 联系方式弹窗 -->
+<!-- 联系方式弹窗（已移除关闭按钮） -->
 <div class="modal" id="contactModal">
   <div class="modal-content">
-    <h3>联系方式</h3>
     <p id="contactText"></p>
-    <div class="close-btn" onclick="closeModal()">关闭</div>
   </div>
 </div>
 
 <script>
 // 自动计算年龄、工龄 配置
 const birthYear = 1997;
-const workStartYear = 2017;
+const workStartYear = 2018;
 const liveCity = "杭州";
 
 function setAutoInfo() {
