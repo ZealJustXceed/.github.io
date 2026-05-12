@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> ZealJustXceed简历</title>
+  <title> ZealJustXceed介绍</title>
   <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -166,7 +166,7 @@
       left: -7px;
     }
 
-    /* ========== 1. 时间文字样式（可自由改大小/颜色） ========== */
+    /* 时间文字样式 */
     .timeline-time {
       position: absolute;
       top: 22px;
@@ -182,14 +182,12 @@
       right: calc(100% + 22px);
     }
 
-    /* ========== 2. 图标样式 ========== */
     .timeline-icon {
       font-size: 18px;
       color: #444;
       margin-right: 8px;
     }
 
-    /* ========== 3. 岗位标题 可控制大小/颜色/间距 ========== */
     .main-title {
       font-size: 16px;
       color: #111;
@@ -197,14 +195,13 @@
       margin-bottom: 6px;
     }
 
-    /* ========== 4. 描述文字 可控制大小/颜色/行间距 ========== */
     .sub-desc {
       font-size: 14px;
       color: #555;
       line-height: 1.6;
     }
 
-    /* 专业技能 整齐对齐 */
+    /* 专业技能 取消居中，恢复左对齐 */
     .skill-list {
       display: flex;
       flex-direction: column;
@@ -233,6 +230,8 @@
       color: #444;
       white-space: nowrap;
     }
+
+    /* 作品集网格 + 图片H5不缩小、不变形 */
     .grid-img {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -241,11 +240,12 @@
     }
     .grid-img img {
       width: 100%;
-      aspect-ratio: 1/1;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain;
       border-radius: 8px;
       display: block;
     }
+
     a {
       color: #222;
       text-decoration: none;
@@ -466,7 +466,7 @@
           <div class="skill-item">📝 办公：Microsoft Office、WPS Office、飞书/腾讯在线文档</div>
           <div class="skill-item">🎬 剪辑：Final Cut Pro、Adobe Premiere Pro、达芬奇、剪映</div>
           <div class="skill-item">📷 拍摄：索尼、富士、大疆、影石、iPhone</div>
-          <div class="skill-item">💻 正在学习：AI编程</div>
+          <div class="skill-item">💻 正在学习：AI编程（这个网页是我学习的成果）</div>
         </div>
       </div>
     </section>
@@ -539,12 +539,11 @@
 </div>
 
 <script>
-// ========== 自动计算年龄、工龄 配置（只需改这里） ==========
-const birthYear = 1997;    // 出生年份
-const workStartYear = 2017;// 开始工作年份
+// 自动计算年龄、工龄 配置
+const birthYear = 1997;
+const workStartYear = 2017;
 const liveCity = "杭州";
 
-// 自动更新年龄工龄
 function setAutoInfo() {
   const now = new Date();
   const currYear = now.getFullYear();
