@@ -85,7 +85,6 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       display: block;
       transition: opacity 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease;
-      /* 关键：禁止缩略图模糊 */
       image-rendering: crisp-edges;
       image-rendering: -moz-crisp-edges;
       image-rendering: -webkit-optimize-contrast;
@@ -218,7 +217,7 @@
       line-height: 1.6;
     }
 
-    /* 图片网格 + 悬浮动效 + 禁止模糊 */
+    /* 图片网格 + 悬浮动效 */
     .grid-img {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -233,12 +232,10 @@
       display: block;
       will-change: transform;
       transition: opacity 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease;
-      /* 关键：缩略图清晰不模糊 */
       image-rendering: crisp-edges;
       image-rendering: -moz-crisp-edges;
       image-rendering: -webkit-optimize-contrast;
     }
-    /* 鼠标悬浮微动 */
     .grid-img img:hover {
       transform: translateY(-4px) scale(1.02);
       box-shadow: 0 6px 18px rgba(0,0,0,0.12);
@@ -256,6 +253,7 @@
       display: block;
     }
 
+    /* ========== 侧边联系方式 ========== */
     .side-contact {
       position: fixed;
       right: 20px;
@@ -265,6 +263,26 @@
       flex-direction: column;
       gap: 16px;
       z-index: 999;
+    }
+    .side-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+    }
+    .side-text {
+      position: absolute;
+      right: 50px;
+      background: #222;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
     }
     .side-btn {
       width: 44px;
@@ -279,39 +297,25 @@
       color: #222;
       cursor: pointer;
       transition: all 0.3s ease;
+      z-index: 2;
     }
-    .side-btn:hover {
+    /* 悬浮效果 */
+    .side-item:hover .side-text {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .side-item:hover .side-btn {
       background: #222;
       color: #fff;
     }
-
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.25);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      backdrop-filter: blur(6px);
+    /* 点击锁定常驻样式 */
+    .side-item.active .side-text {
+      opacity: 1 !important;
+      transform: translateX(0) !important;
     }
-    .modal-content {
-      background: #fff;
-      padding: 24px 30px;
-      border-radius: 16px;
-      text-align: center;
-      min-width: 280px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-      transform: translateY(20px);
-      opacity: 0;
-      transition: all 0.3s ease;
-    }
-    .modal.show .modal-content {
-      transform: translateY(0);
-      opacity: 1;
+    .side-item.active .side-btn {
+      background: #222 !important;
+      color: #fff !important;
     }
 
     /* 手机适配 */
@@ -346,10 +350,6 @@
         height: 38px;
         font-size: 16px;
       }
-      .modal-content {
-        min-width: 240px;
-        padding: 20px 24px;
-      }
       .nav-inner {
         gap: 30px;
       }
@@ -371,7 +371,6 @@
 </div>
 
 <div class="container">
-
   <div class="header">
     <img class="avatar" data-src="z1.jpg" src="z1_min.jpg" alt="头像">
     <h1>曾剑勋</h1>
@@ -511,18 +510,21 @@
       <p style="text-align:center;margin-top:12px;">摄影、徒步、飞盘、摩旅...</p>
     </div>
   </section>
-
 </div>
 
+<!-- 侧边栏 + 点击锁定功能 -->
 <div class="side-contact">
-  <div class="side-btn" data-type="phone"><i class="fas fa-phone"></i></div>
-  <div class="side-btn" data-type="email"><i class="fas fa-envelope"></i></div>
-  <div class="side-btn" data-type="wechat"><i class="fab fa-weixin"></i></div>
-</div>
-
-<div class="modal" id="contactModal">
-  <div class="modal-content">
-    <p id="contactText"></p>
+  <div class="side-item">
+    <div class="side-text">电话：180 6943 3367</div>
+    <div class="side-btn"><i class="fas fa-phone"></i></div>
+  </div>
+  <div class="side-item">
+    <div class="side-text">邮箱：zeng_jianxun@163.com</div>
+    <div class="side-btn"><i class="fas fa-envelope"></i></div>
+  </div>
+  <div class="side-item">
+    <div class="side-text">微信：nickaxxxxx</div>
+    <div class="side-btn"><i class="fab fa-weixin"></i></div>
   </div>
 </div>
 
@@ -541,7 +543,7 @@ function setAutoInfo() {
 }
 setAutoInfo();
 
-// 时间轴滚动动画
+// 时间轴动画
 function checkScroll() {
   const items = document.querySelectorAll('.timeline-item');
   items.forEach(item => {
@@ -581,39 +583,25 @@ navItems.forEach(item => {
   });
 });
 
-// 弹窗
-const modal = document.getElementById('contactModal');
-const contactText = document.getElementById('contactText');
-const btns = document.querySelectorAll('.side-btn');
-btns.forEach(btn => {
-  btn.addEventListener('click', ()=>{
-    const type = btn.getAttribute('data-type');
-    let text = '';
-    switch(type){
-      case 'phone': text = '电话：180 6943 3367'; break;
-      case 'email': text = '邮箱：zeng_jianxun@163.com'; break;
-      case 'wechat': text = '微信：nickaxxxxx'; break;
-    }
-    contactText.innerText = text;
-    modal.style.display = 'flex';
-    setTimeout(()=>modal.classList.add('show'),10);
+// ========== 侧边栏 点击锁定显示 ==========
+const sideItems = document.querySelectorAll('.side-item');
+sideItems.forEach(item => {
+  item.querySelector('.side-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    item.classList.toggle('active');
   });
 });
-function closeModal(){
-  modal.classList.remove('show');
-  setTimeout(()=>{ modal.style.display = 'none'; }, 300);
-}
-modal.addEventListener('click', (e)=>{
-  if(e.target === modal) closeModal();
+// 点击页面空白处关闭所有锁定
+document.addEventListener('click', () => {
+  sideItems.forEach(i => i.classList.remove('active'));
 });
 
-// 低清缩略图 → 逐个加载高清原图 逻辑保留不变
+// 图片高清加载
 window.addEventListener('load', () => {
   const imgs = document.querySelectorAll('img[data-src]');
   imgs.forEach((img, idx) => {
     setTimeout(() => {
-      const hdSrc = img.dataset.src;
-      img.src = hdSrc;
+      img.src = img.dataset.src;
     }, idx * 80);
   });
 });
