@@ -23,7 +23,7 @@
       margin: 0 auto;
     }
 
-    /* 顶部固定分页导航 */
+    /* 顶部导航 */
     .top-nav {
       position: fixed;
       top: 0;
@@ -84,6 +84,11 @@
       border: 3px solid #fff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       display: block;
+      transition: opacity 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      /* 关键：禁止缩略图模糊 */
+      image-rendering: crisp-edges;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-optimize-contrast;
     }
     h1 {
       font-size: 28px;
@@ -114,7 +119,7 @@
       margin-bottom: 12px;
     }
 
-    /* ========== 时间轴全局 ========== */
+    /* 时间轴 */
     .timeline {
       position: relative;
       max-width: 700px;
@@ -166,7 +171,6 @@
       left: -7px;
     }
 
-    /* 时间文字样式 */
     .timeline-time {
       position: absolute;
       top: 22px;
@@ -201,7 +205,6 @@
       line-height: 1.6;
     }
 
-    /* 专业技能 左对齐 */
     .skill-list {
       display: flex;
       flex-direction: column;
@@ -215,23 +218,7 @@
       line-height: 1.6;
     }
 
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-      justify-content: center;
-    }
-    .tag {
-      background: #f5f5f;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 13px;
-      color: #444;
-      white-space: nowrap;
-    }
-
-    /* 作品集图片 */
+    /* 图片网格 + 悬浮动效 + 禁止模糊 */
     .grid-img {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -244,6 +231,17 @@
       object-fit: contain;
       border-radius: 8px;
       display: block;
+      will-change: transform;
+      transition: opacity 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      /* 关键：缩略图清晰不模糊 */
+      image-rendering: crisp-edges;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-optimize-contrast;
+    }
+    /* 鼠标悬浮微动 */
+    .grid-img img:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
     }
 
     a {
@@ -258,7 +256,6 @@
       display: block;
     }
 
-    /* 侧边图标栏 */
     .side-contact {
       position: fixed;
       right: 20px;
@@ -288,7 +285,6 @@
       color: #fff;
     }
 
-    /* 弹窗样式 */
     .modal {
       position: fixed;
       top: 0;
@@ -316,16 +312,6 @@
     .modal.show .modal-content {
       transform: translateY(0);
       opacity: 1;
-    }
-    .modal-content h3 {
-      margin-bottom: 12px;
-      font-size: 17px;
-      font-weight: 600;
-    }
-    .modal-content p {
-      font-size: 15px;
-      margin: 8px 0;
-      color: #333;
     }
 
     /* 手机适配 */
@@ -375,7 +361,6 @@
 </head>
 <body>
 
-<!-- 顶部固定分页导航 → 已添加【案例】 -->
 <div class="top-nav">
   <div class="nav-inner">
     <div class="nav-item active" data-target="about">关于我</div>
@@ -388,12 +373,11 @@
 <div class="container">
 
   <div class="header">
-    <img class="avatar" src="z1.jpg" alt="头像" loading="lazy">
+    <img class="avatar" data-src="z1.jpg" src="z1_min.jpg" alt="头像">
     <h1>曾剑勋</h1>
     <div class="info-line" id="autoInfo"></div>
   </div>
 
-  <!-- 关于我 区块 -->
   <section id="about">
     <section>
       <h2>关于我</h2>
@@ -419,7 +403,6 @@
             <div class="sub-desc">摄影、摄像、剪辑、修图、撰写文案、数据分析、活动策划、社媒分发、粉丝互动</div>
           </div>
         </div>
-
         <div class="timeline-item timeline-right">
           <div class="timeline-time">2021 - 2024</div>
           <div class="card">
@@ -429,7 +412,6 @@
             <div class="sub-desc">意式、手冲、特调、研发新品、成本核算、库存管理</div>
           </div>
         </div>
-
         <div class="timeline-item timeline-left">
           <div class="timeline-time">2019 - 2021</div>
           <div class="card">
@@ -439,7 +421,6 @@
             <div class="sub-desc">开发新客、维护客情、挖掘需求、收集竞品、回款跟进</div>
           </div>
         </div>
-
         <div class="timeline-item timeline-right">
           <div class="timeline-time">2018 - 2019</div>
           <div class="card">
@@ -465,101 +446,80 @@
     </section>
   </section>
 
-  <!-- 作品集 区块 -->
   <section id="portfolio">
-    <section>
-      <h2>作品集</h2>
-    </section>
-
-    <section>
-      <div class="card">
-        <p style="text-align:center;margin-bottom:10px;"><strong>人物作品</strong></p>
-        <div class="grid-img">
-          <img src="z5.jpg" loading="lazy">
-          <img src="z7.jpg" loading="lazy">
-          <img src="z9.jpg" loading="lazy">
-          <img src="z6.jpg" loading="lazy">
-          <img src="z8.jpg" loading="lazy">
-          <img src="z10.jpg" loading="lazy">
-        </div>
+    <h2>作品集</h2>
+    <div class="card">
+      <p style="text-align:center;margin-bottom:10px;"><strong>人物作品</strong></p>
+      <div class="grid-img">
+        <img data-src="z5.jpg" src="z5_min.jpg" alt="">
+        <img data-src="z7.jpg" src="z7_min.jpg" alt="">
+        <img data-src="z9.jpg" src="z9_min.jpg" alt="">
+        <img data-src="z6.jpg" src="z6_min.jpg" alt="">
+        <img data-src="z8.jpg" src="z8_min.jpg" alt="">
+        <img data-src="z10.jpg" src="z10_min.jpg" alt="">
       </div>
-    </section>
-
-    <section>
-      <div class="card">
-        <p style="text-align:center;margin-bottom:10px;"><strong>食物作品</strong></p>
-        <div class="grid-img">
-          <img src="z11.jpg" loading="lazy">
-          <img src="z12.jpg" loading="lazy">
-          <img src="z13.jpg" loading="lazy">
-          <img src="z14.jpg" loading="lazy">
-          <img src="z15.jpg" loading="lazy">
-          <img src="z16.jpg" loading="lazy">
-        </div>
+    </div>
+    <div class="card">
+      <p style="text-align:center;margin-bottom:10px;"><strong>食物作品</strong></p>
+      <div class="grid-img">
+        <img data-src="z11.jpg" src="z11_min.jpg" alt="">
+        <img data-src="z12.jpg" src="z12_min.jpg" alt="">
+        <img data-src="z13.jpg" src="z13_min.jpg" alt="">
+        <img data-src="z14.jpg" src="z14_min.jpg" alt="">
+        <img data-src="z15.jpg" src="z15_min.jpg" alt="">
+        <img data-src="z16.jpg" src="z16_min.jpg" alt="">
       </div>
-    </section>
-
-    <section>
-      <div class="card">
-        <p style="text-align:center;margin-bottom:10px;"><strong>活动作品</strong></p>
-        <div class="grid-img">
-          <img src="z17.jpg" loading="lazy">
-          <img src="z18.jpg" loading="lazy">
-          <img src="z19.jpg" loading="lazy">
-          <img src="z20.jpg" loading="lazy">
-          <img src="z21.jpg" loading="lazy">
-          <img src="z22.jpg" loading="lazy">
-        </div>
+    </div>
+    <div class="card">
+      <p style="text-align:center;margin-bottom:10px;"><strong>活动作品</strong></p>
+      <div class="grid-img">
+        <img data-src="z17.jpg" src="z17_min.jpg" alt="">
+        <img data-src="z18.jpg" src="z18_min.jpg" alt="">
+        <img data-src="z19.jpg" src="z19_min.jpg" alt="">
+        <img data-src="z20.jpg" src="z20_min.jpg" alt="">
+        <img data-src="z21.jpg" src="z21_min.jpg" alt="">
+        <img data-src="z22.jpg" src="z22_min.jpg" alt="">
       </div>
-    </section>
+    </div>
   </section>
 
-  <!-- 社媒案例 单独区块 → 对应导航【案例】 -->
   <section id="case">
-    <section>
-      <h2>社媒案例</h2>
-      <div class="card">
-        <h2 style="margin-bottom:15px;">@ 今晚尽兴</h2>
-        <div class="grid-img">
-          <a href="http://xhslink.com/o/19e88pxWpBU" target="_blank"><img src="z2.jpg" loading="lazy"></a>
-          <a href="http://xhslink.com/o/3fldChleYZQ" target="_blank"><img src="z3.jpg" loading="lazy"></a>
-          <a href="http://xhslink.com/o/3DjG8mxnEYU" target="_blank"><img src="z4.jpg" loading="lazy"></a>
-        </div>
-        <p style="text-align:center;margin-top:12px;">多篇笔记浏览量破万，点赞收藏破千。展示案例为本人账号。</p>
-        <h2 style="text-align:center;">点击图片可直接跳转</h2>
+    <h2>社媒案例</h2>
+    <div class="card">
+      <h2 style="margin-bottom:15px;">@ 今晚尽兴</h2>
+      <div class="grid-img">
+        <a href="http://xhslink.com/o/19e88pxWpBU" target="_blank"><img data-src="z2.jpg" src="z2_min.jpg" alt=""></a>
+        <a href="http://xhslink.com/o/3fldChleYZQ" target="_blank"><img data-src="z3.jpg" src="z3_min.jpg" alt=""></a>
+        <a href="http://xhslink.com/o/3DjG8mxnEYU" target="_blank"><img data-src="z4.jpg" src="z4_min.jpg" alt=""></a>
       </div>
-    </section>
+      <p style="text-align:center;margin-top:12px;">多篇笔记浏览量破万，点赞收藏破千。展示案例为本人账号。</p>
+      <h2 style="text-align:center;">点击图片可直接跳转</h2>
+    </div>
   </section>
 
-  <!-- 这是我 单独区块 → 对应导航【ME】 -->
   <section id="ME">
-    <section>
-      <h2>我的生活</h2>
-      <div class="card">
-        <div class="grid-img">
-          <img src="z23.jpg" loading="lazy">
-          <img src="z24.jpg" loading="lazy">
-          <img src="z25.jpg" loading="lazy">
-          <img src="z26.jpg" loading="lazy">
-          <img src="z27.jpg" loading="lazy">
-          <img src="z28.jpg" loading="lazy">
-        </div>
-          <p style="text-align:center;margin-top:12px;">摄影、徒步、飞盘、摩旅...</p>
+    <h2>我的生活</h2>
+    <div class="card">
+      <div class="grid-img">
+        <img data-src="z23.jpg" src="z23_min.jpg" alt="">
+        <img data-src="z24.jpg" src="z24_min.jpg" alt="">
+        <img data-src="z25.jpg" src="z25_min.jpg" alt="">
+        <img data-src="z26.jpg" src="z26_min.jpg" alt="">
+        <img data-src="z27.jpg" src="z27_min.jpg" alt="">
+        <img data-src="z28.jpg" src="z28_min.jpg" alt="">
       </div>
-    </section>
+      <p style="text-align:center;margin-top:12px;">摄影、徒步、飞盘、摩旅...</p>
+    </div>
   </section>
 
 </div>
 
-<!-- 右侧悬浮侧边图标栏 -->
 <div class="side-contact">
   <div class="side-btn" data-type="phone"><i class="fas fa-phone"></i></div>
   <div class="side-btn" data-type="email"><i class="fas fa-envelope"></i></div>
   <div class="side-btn" data-type="wechat"><i class="fab fa-weixin"></i></div>
-
 </div>
 
-<!-- 联系方式弹窗（无关闭按钮） -->
 <div class="modal" id="contactModal">
   <div class="modal-content">
     <p id="contactText"></p>
@@ -567,11 +527,10 @@
 </div>
 
 <script>
-// 自动计算年龄、工龄
+// 年龄工龄
 const birthYear = 1997;
 const workStartYear = 2018;
 const liveCity = "杭州";
-
 function setAutoInfo() {
   const now = new Date();
   const currYear = now.getFullYear();
@@ -582,7 +541,7 @@ function setAutoInfo() {
 }
 setAutoInfo();
 
-// 滚动高亮导航
+// 时间轴滚动动画
 function checkScroll() {
   const items = document.querySelectorAll('.timeline-item');
   items.forEach(item => {
@@ -612,7 +571,7 @@ function checkScroll() {
 window.addEventListener('scroll', checkScroll);
 window.addEventListener('load', checkScroll);
 
-// 导航点击跳转
+// 导航跳转
 const navItems = document.querySelectorAll('.nav-item');
 navItems.forEach(item => {
   item.addEventListener('click', ()=>{
@@ -622,11 +581,10 @@ navItems.forEach(item => {
   });
 });
 
-// 弹窗功能
+// 弹窗
 const modal = document.getElementById('contactModal');
 const contactText = document.getElementById('contactText');
 const btns = document.querySelectorAll('.side-btn');
-
 btns.forEach(btn => {
   btn.addEventListener('click', ()=>{
     const type = btn.getAttribute('data-type');
@@ -638,16 +596,26 @@ btns.forEach(btn => {
     }
     contactText.innerText = text;
     modal.style.display = 'flex';
-    modal.classList.add('show');
+    setTimeout(()=>modal.classList.add('show'),10);
   });
 });
-
 function closeModal(){
   modal.classList.remove('show');
   setTimeout(()=>{ modal.style.display = 'none'; }, 300);
 }
 modal.addEventListener('click', (e)=>{
   if(e.target === modal) closeModal();
+});
+
+// 低清缩略图 → 逐个加载高清原图 逻辑保留不变
+window.addEventListener('load', () => {
+  const imgs = document.querySelectorAll('img[data-src]');
+  imgs.forEach((img, idx) => {
+    setTimeout(() => {
+      const hdSrc = img.dataset.src;
+      img.src = hdSrc;
+    }, idx * 80);
+  });
 });
 </script>
 
