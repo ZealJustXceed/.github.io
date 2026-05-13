@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> ZealJustXceed介绍</title>
+  <title>ZealJustXceed介绍</title>
   <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -21,6 +21,17 @@
     .container {
       max-width: 720px;
       margin: 0 auto;
+    }
+
+    /* 全局动画 */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s ease;
+    }
+    .fade-up.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* 顶部导航 */
@@ -70,10 +81,6 @@
     .header {
       text-align: center;
       margin-bottom: 50px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
     }
     .avatar {
       width: 120px;
@@ -84,10 +91,6 @@
       border: 3px solid #fff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       display: block;
-      transition: opacity 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease;
-      image-rendering: crisp-edges;
-      image-rendering: -moz-crisp-edges;
-      image-rendering: -webkit-optimize-contrast;
     }
     h1 {
       font-size: 28px;
@@ -98,7 +101,6 @@
     .info-line {
       font-size: 16px;
       color: #666;
-      white-space: nowrap;
       text-align: center;
     }
     section {
@@ -118,71 +120,107 @@
       margin-bottom: 12px;
     }
 
-    /* 时间轴 */
-    .timeline {
-      position: relative;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    .timeline::after {
-      content: '';
-      position: absolute;
-      width: 2px;
-      background-color: #ddd;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      margin-left: -1px;
-    }
-    .timeline-item {
-      padding: 15px 30px;
-      position: relative;
-      width: 50%;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.6s ease;
-    }
-    .timeline-item.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .timeline-item::after {
-      content: '';
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      background: #222;
-      border-radius: 50%;
-      top: 24px;
-      z-index: 1;
-    }
-    .timeline-left {
-      left: 0;
-      text-align: right;
-    }
-    .timeline-left::after {
-      right: -7px;
-    }
-    .timeline-right {
-      left: 50%;
-    }
-    .timeline-right::after {
-      left: -7px;
+    /* 桌面端时间轴 - 左右交替 */
+    @media (min-width: 601px) {
+      .timeline {
+        position: relative;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .timeline::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        background-color: #ddd;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -1px;
+      }
+      .timeline-item {
+        padding: 15px 30px;
+        position: relative;
+        width: 50%;
+      }
+      .timeline-item::after {
+        content: '';
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        background: #222;
+        border-radius: 50%;
+        top: 24px;
+        z-index: 1;
+      }
+      .timeline-left {
+        left: 0;
+        text-align: right;
+      }
+      .timeline-left::after {
+        right: -7px;
+      }
+      .timeline-right {
+        left: 50%;
+      }
+      .timeline-right::after {
+        left: -7px;
+      }
+      .timeline-time {
+        position: absolute;
+        top: 22px;
+        font-size: 14px;
+        color: #666;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+      .timeline-left .timeline-time {
+        left: calc(100% + 22px);
+      }
+      .timeline-right .timeline-time {
+        right: calc(100% + 22px);
+      }
     }
 
-    .timeline-time {
-      position: absolute;
-      top: 22px;
-      font-size: 14px;
-      color: #666;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    .timeline-left .timeline-time {
-      left: calc(100% + 22px);
-    }
-    .timeline-right .timeline-time {
-      right: calc(100% + 22px);
+    /* 手机端时间轴 - 左侧竖线+圆点 */
+    @media (max-width: 600px) {
+      .timeline {
+        position: relative;
+        padding-left: 20px;
+      }
+      .timeline::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: #ddd;
+      }
+      .timeline-item {
+        width: 100%;
+        padding: 0 0 16px 20px;
+        position: relative;
+      }
+      .timeline-item::after {
+        content: '';
+        position: absolute;
+        left: -7px;
+        top: 20px;
+        width: 14px;
+        height: 14px;
+        background: #222;
+        border-radius: 50%;
+        z-index: 1;
+      }
+      .timeline-time {
+        display: block !important;
+        visibility: visible !important;
+        position: static !important;
+        font-size: 14px;
+        color: #999;
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
     }
 
     .timeline-icon {
@@ -190,14 +228,12 @@
       color: #444;
       margin-right: 8px;
     }
-
     .main-title {
       font-size: 16px;
       color: #111;
       font-weight: 600;
       margin-bottom: 6px;
     }
-
     .sub-desc {
       font-size: 14px;
       color: #555;
@@ -217,7 +253,6 @@
       line-height: 1.6;
     }
 
-    /* 图片网格 + 悬浮动效 */
     .grid-img {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -230,11 +265,7 @@
       object-fit: contain;
       border-radius: 8px;
       display: block;
-      will-change: transform;
-      transition: opacity 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease;
-      image-rendering: crisp-edges;
-      image-rendering: -moz-crisp-edges;
-      image-rendering: -webkit-optimize-contrast;
+      transition: all 0.3s ease;
     }
     .grid-img img:hover {
       transform: translateY(-4px) scale(1.02);
@@ -253,7 +284,7 @@
       display: block;
     }
 
-    /* ========== 侧边联系方式 ========== */
+    /* 侧边联系方式 */
     .side-contact {
       position: fixed;
       right: 20px;
@@ -296,10 +327,8 @@
       font-size: 18px;
       color: #222;
       cursor: pointer;
-      transition: all 0.3s ease;
       z-index: 2;
     }
-    /* 悬浮效果 */
     .side-item:hover .side-text {
       opacity: 1;
       transform: translateX(0);
@@ -308,7 +337,6 @@
       background: #222;
       color: #fff;
     }
-    /* 点击锁定常驻样式 */
     .side-item.active .side-text {
       opacity: 1 !important;
       transform: translateX(0) !important;
@@ -337,24 +365,7 @@
       opacity: 1;
     }
 
-    /* 手机适配 */
     @media (max-width: 600px) {
-      .timeline::after {
-        left: 20px;
-      }
-      .timeline-item {
-        width: 100%;
-        padding-left: 50px;
-        padding-right: 15px;
-        text-align: left !important;
-      }
-      .timeline-left, .timeline-right {
-        left: 0;
-      }
-      .timeline-left::after,
-      .timeline-right::after {
-        left: 13px;
-      }
       body {
         padding: 80px 12px 20px;
       }
@@ -372,15 +383,11 @@
       .nav-inner {
         gap: 30px;
       }
-      .timeline-time {
-        display: none;
-      }
     }
   </style>
 </head>
 <body>
 
-<!-- 复制提示 -->
 <div class="copy-tip" id="copyTip">已复制到剪贴板</div>
 
 <div class="top-nav">
@@ -393,81 +400,75 @@
 </div>
 
 <div class="container">
-  <div class="header">
+  <div class="header fade-up">
     <img class="avatar" data-src="z1.jpg" src="z1_min.jpg" alt="头像">
     <h1>曾剑勋</h1>
     <div class="info-line" id="autoInfo"></div>
   </div>
 
-  <section id="about">
-    <section>
-      <h2>关于我</h2>
-      <div class="card" style="text-align:center;">
-        <p>我是一名多维度选手，过去的时间里，我在不同的城市生活和工作。</p>
-        <p>我过往工作涉及多个行业和岗位，从基层做起，脚踏实地。</p>
-        <p>我专注于自身成长，以抵抗时代巨轮的碾压。</p>
-        <p>我热爱生活，性格外向，不内耗。</p>
-        <p>我最最最喜欢的一句台词。</p>
-        <p>“做人嘛，最重要的是开心。”</p>
-      </div>
-    </section>
+  <section id="about" class="fade-up">
+    <h2>关于我</h2>
+    <div class="card" style="text-align:center;">
+      <p>我是一名多维度选手，过去的时间里，我在不同的城市生活和工作。</p>
+      <p>我过往工作涉及多个行业和岗位，从基层做起，脚踏实地。</p>
+      <p>我专注于自身成长，以抵抗时代巨轮的碾压。</p>
+      <p>我热爱生活，性格外向，不内耗。</p>
+      <p>我最最最喜欢的台词。</p>
+      <p>“做人嘛，最重要的是开心。”</p>
+    </div>
 
-    <section>
-      <h2>工作经历</h2>
-      <div class="timeline">
-        <div class="timeline-item timeline-left">
-          <div class="timeline-time">2025 - 2026</div>
-          <div class="card">
-            <div class="main-title">
-              <i class="fas fa-video timeline-icon"></i>博主助理 兼职 
-            </div>
-            <div class="sub-desc">摄影、摄像、剪辑、修图、撰写文案、数据分析、活动策划、社媒分发、粉丝互动</div>
+    <h2>工作经历</h2>
+    <div class="timeline">
+      <div class="timeline-item fade-up timeline-left">
+        <div class="timeline-time">2025 - 2026</div>
+        <div class="card">
+          <div class="main-title">
+            <i class="fas fa-video timeline-icon"></i>博主助理 兼职 
           </div>
-        </div>
-        <div class="timeline-item timeline-right">
-          <div class="timeline-time">2021 - 2024</div>
-          <div class="card">
-            <div class="main-title">
-              <i class="fas fa-mug-hot timeline-icon"></i>店长 niko and coffee
-            </div>
-            <div class="sub-desc">意式、手冲、特调、研发新品、成本核算、库存管理</div>
-          </div>
-        </div>
-        <div class="timeline-item timeline-left">
-          <div class="timeline-time">2019 - 2021</div>
-          <div class="card">
-            <div class="main-title">
-              <i class="fas fa-handshake timeline-icon"></i>销售 北京迈迪生
-            </div>
-            <div class="sub-desc">开发新客、维护客情、挖掘需求、收集竞品、回款跟进</div>
-          </div>
-        </div>
-        <div class="timeline-item timeline-right">
-          <div class="timeline-time">2018 - 2019</div>
-          <div class="card">
-            <div class="main-title">
-              <i class="fas fa-headset timeline-icon"></i>客服 深圳阿卡索
-            </div>
-            <div class="sub-desc">维护客情、处理客诉、收集用户反馈、提高用户满意度</div>
-          </div>
+          <div class="sub-desc">摄影、摄像、剪辑、修图、撰写文案、数据分析、活动策划、社媒分发、粉丝互动</div>
         </div>
       </div>
-    </section>
+      <div class="timeline-item fade-up timeline-right">
+        <div class="timeline-time">2021 - 2024</div>
+        <div class="card">
+          <div class="main-title">
+            <i class="fas fa-mug-hot timeline-icon"></i>店长 niko and coffee
+          </div>
+          <div class="sub-desc">意式、手冲、特调、研发新品、成本核算、库存管理</div>
+        </div>
+      </div>
+      <div class="timeline-item fade-up timeline-left">
+        <div class="timeline-time">2019 - 2021</div>
+        <div class="card">
+          <div class="main-title">
+            <i class="fas fa-handshake timeline-icon"></i>销售 北京迈迪生
+          </div>
+          <div class="sub-desc">开发新客、维护客情、挖掘需求、收集竞品、回款跟进</div>
+        </div>
+      </div>
+      <div class="timeline-item fade-up timeline-right">
+        <div class="timeline-time">2018 - 2019</div>
+        <div class="card">
+          <div class="main-title">
+            <i class="fas fa-headset timeline-icon"></i>客服 深圳阿卡索
+          </div>
+          <div class="sub-desc">维护客情、处理客诉、收集用户反馈、提高用户满意度</div>
+        </div>
+      </div>
+    </div>
 
-    <section>
-      <h2>专业技能</h2>
-      <div class="card">
-        <div class="skill-list">
-          <div class="skill-item">📝 办公：Microsoft Office、WPS Office、飞书/腾讯在线文档</div>
-          <div class="skill-item">🎬 剪辑：Final Cut Pro、Adobe Premiere Pro、达芬奇、剪映</div>
-          <div class="skill-item">📷 拍摄：索尼、富士、大疆、影石、iPhone</div>
-          <div class="skill-item">💻 正在学习：AI编程、AI视频</div>
-        </div>
+    <h2>专业技能</h2>
+    <div class="card">
+      <div class="skill-list">
+        <div class="skill-item">📝 办公：Microsoft Office、WPS Office、飞书/腾讯在线文档</div>
+        <div class="skill-item">🎬 剪辑：Final Cut Pro、Adobe Premiere Pro、达芬奇、剪映</div>
+        <div class="skill-item">📷 拍摄：索尼、富士、大疆、影石、iPhone</div>
+        <div class="skill-item">💻 正在学习：AI编程、AI视频</div>
       </div>
-    </section>
+    </div>
   </section>
 
-  <section id="portfolio">
+  <section id="portfolio" class="fade-up">
     <h2>作品集</h2>
     <div class="card">
       <p style="text-align:center;margin-bottom:10px;"><strong>人物作品</strong></p>
@@ -504,7 +505,7 @@
     </div>
   </section>
 
-  <section id="case">
+  <section id="case" class="fade-up">
     <h2>社媒案例</h2>
     <div class="card">
       <h2 style="margin-bottom:15px;">@ 今晚尽兴</h2>
@@ -518,7 +519,7 @@
     </div>
   </section>
 
-  <section id="ME">
+  <section id="ME" class="fade-up">
     <h2>我的生活</h2>
     <div class="card">
       <div class="grid-img">
@@ -534,7 +535,6 @@
   </section>
 </div>
 
-<!-- 侧边栏 悬浮+锁定+复制 -->
 <div class="side-contact">
   <div class="side-item" data-copy="180 6943 3367">
     <div class="side-text">电话：180 6943 3367</div>
@@ -551,7 +551,7 @@
 </div>
 
 <script>
-// 年龄工龄
+// 年龄自动计算
 const birthYear = 1997;
 const workStartYear = 2018;
 const liveCity = "杭州";
@@ -560,80 +560,70 @@ function setAutoInfo() {
   const currYear = now.getFullYear();
   const age = currYear - birthYear;
   const workYear = currYear - workStartYear;
-  document.getElementById('autoInfo').innerText = 
-    `${age}岁 · 工龄${workYear}年 · base${liveCity}`;
+  document.getElementById('autoInfo').innerText = `${age}岁 · 工龄${workYear}年 · base${liveCity}`;
 }
 setAutoInfo();
 
-// 时间轴动画
+// 滚动动画 + 顶部导航自动高亮
 function checkScroll() {
-  const items = document.querySelectorAll('.timeline-item');
-  items.forEach(item => {
+  // 板块上浮动画
+  const fadeEls = document.querySelectorAll('.fade-up');
+  fadeEls.forEach(item => {
     const rect = item.getBoundingClientRect();
     if (rect.top < window.innerHeight * 0.85) {
       item.classList.add('show');
     }
   });
 
-  const sections = ['about', 'portfolio', 'case','ME'];
+  // 顶部导航自动跟随
+  const sections = ['about', 'portfolio', 'case', 'ME'];
   const navItems = document.querySelectorAll('.nav-item');
   let current = '';
   sections.forEach(id => {
     const section = document.getElementById(id);
     const rect = section.getBoundingClientRect();
-    if(rect.top < 150) {
+    if (rect.top <= 150) {
       current = id;
     }
   });
   navItems.forEach(item => {
     item.classList.remove('active');
-    if(item.getAttribute('data-target') === current) {
+    if (item.getAttribute('data-target') === current) {
       item.classList.add('active');
     }
   });
 }
+
 window.addEventListener('scroll', checkScroll);
 window.addEventListener('load', checkScroll);
 
-// 导航跳转
-const navItems = document.querySelectorAll('.nav-item');
-navItems.forEach(item => {
-  item.addEventListener('click', ()=>{
+// 导航点击跳转
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
     const target = item.getAttribute('data-target');
-    const el = document.getElementById(target);
-    el.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(target).scrollIntoView({ behavior: 'smooth' });
   });
 });
 
-// ========== 侧边栏：悬浮+点击锁定+一键复制 ==========
+// 侧边栏复制功能
 const sideItems = document.querySelectorAll('.side-item');
 const copyTip = document.getElementById('copyTip');
-
 sideItems.forEach(item => {
-  const btn = item.querySelector('.side-btn');
-  
-  // 点击锁定 + 复制
-  btn.addEventListener('click', (e) => {
+  item.querySelector('.side-btn').addEventListener('click', e => {
     e.stopPropagation();
-    // 切换锁定显示
     item.classList.toggle('active');
-    
-    // 复制内容
-    const copyText = item.getAttribute('data-copy');
-    navigator.clipboard.writeText(copyText).then(() => {
-      // 显示复制提示
+    const txt = item.getAttribute('data-copy');
+    navigator.clipboard.writeText(txt).then(() => {
       copyTip.classList.add('show');
       setTimeout(() => copyTip.classList.remove('show'), 1500);
     });
   });
 });
-
-// 点击空白处关闭所有锁定
 document.addEventListener('click', () => {
   sideItems.forEach(i => i.classList.remove('active'));
 });
 
-// 图片高清加载
+// 图片加载
 window.addEventListener('load', () => {
   const imgs = document.querySelectorAll('img[data-src]');
   imgs.forEach((img, idx) => {
