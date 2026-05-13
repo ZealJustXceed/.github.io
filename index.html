@@ -223,7 +223,7 @@
       justify-content: center;
     }
     .tag {
-      background: #f5f5f5;
+      background: #f5f5f;
       padding: 4px 10px;
       border-radius: 20px;
       font-size: 13px;
@@ -388,7 +388,7 @@
 <div class="container">
 
   <div class="header">
-    <img class="avatar" src="z1.jpg" alt="头像">
+    <img class="avatar" src="z1.jpg" alt="头像" loading="lazy">
     <h1>曾剑勋</h1>
     <div class="info-line" id="autoInfo"></div>
   </div>
@@ -475,8 +475,12 @@
       <div class="card">
         <p style="text-align:center;margin-bottom:10px;"><strong>人物作品</strong></p>
         <div class="grid-img">
-          <img src="z5.jpg"><img src="z7.jpg"><img src="z9.jpg">
-          <img src="z6.jpg"><img src="z8.jpg"><img src="z10.jpg">
+          <img src="z5.jpg" loading="lazy">
+          <img src="z7.jpg" loading="lazy">
+          <img src="z9.jpg" loading="lazy">
+          <img src="z6.jpg" loading="lazy">
+          <img src="z8.jpg" loading="lazy">
+          <img src="z10.jpg" loading="lazy">
         </div>
       </div>
     </section>
@@ -485,8 +489,12 @@
       <div class="card">
         <p style="text-align:center;margin-bottom:10px;"><strong>食物作品</strong></p>
         <div class="grid-img">
-          <img src="z11.jpg"><img src="z12.jpg"><img src="z13.jpg">
-          <img src="z14.jpg"><img src="z15.jpg"><img src="z16.jpg">
+          <img src="z11.jpg" loading="lazy">
+          <img src="z12.jpg" loading="lazy">
+          <img src="z13.jpg" loading="lazy">
+          <img src="z14.jpg" loading="lazy">
+          <img src="z15.jpg" loading="lazy">
+          <img src="z16.jpg" loading="lazy">
         </div>
       </div>
     </section>
@@ -495,8 +503,12 @@
       <div class="card">
         <p style="text-align:center;margin-bottom:10px;"><strong>活动作品</strong></p>
         <div class="grid-img">
-          <img src="z17.jpg"><img src="z18.jpg"><img src="z19.jpg">
-          <img src="z20.jpg"><img src="z21.jpg"><img src="z22.jpg">
+          <img src="z17.jpg" loading="lazy">
+          <img src="z18.jpg" loading="lazy">
+          <img src="z19.jpg" loading="lazy">
+          <img src="z20.jpg" loading="lazy">
+          <img src="z21.jpg" loading="lazy">
+          <img src="z22.jpg" loading="lazy">
         </div>
       </div>
     </section>
@@ -509,9 +521,9 @@
       <div class="card">
         <h2 style="margin-bottom:15px;">@ 今晚尽兴</h2>
         <div class="grid-img">
-          <a href="http://xhslink.com/o/19e88pxWpBU" target="_blank"><img src="z2.jpg"></a>
-          <a href="http://xhslink.com/o/3fldChleYZQ" target="_blank"><img src="z3.jpg"></a>
-          <a href="http://xhslink.com/o/3DjG8mxnEYU" target="_blank"><img src="z4.jpg"></a>
+          <a href="http://xhslink.com/o/19e88pxWpBU" target="_blank"><img src="z2.jpg" loading="lazy"></a>
+          <a href="http://xhslink.com/o/3fldChleYZQ" target="_blank"><img src="z3.jpg" loading="lazy"></a>
+          <a href="http://xhslink.com/o/3DjG8mxnEYU" target="_blank"><img src="z4.jpg" loading="lazy"></a>
         </div>
         <p style="text-align:center;margin-top:12px;">多篇笔记浏览量破万，点赞收藏破千。展示案例为本人账号。</p>
         <h2 style="text-align:center;">点击图片可直接跳转</h2>
@@ -525,8 +537,12 @@
       <h2>我的生活</h2>
       <div class="card">
         <div class="grid-img">
-          <img src="z23.jpg"><img src="z24.jpg"><img src="z25.jpg">
-          <img src="z26.jpg"><img src="z27.jpg"><img src="z28.jpg">
+          <img src="z23.jpg" loading="lazy">
+          <img src="z24.jpg" loading="lazy">
+          <img src="z25.jpg" loading="lazy">
+          <img src="z26.jpg" loading="lazy">
+          <img src="z27.jpg" loading="lazy">
+          <img src="z28.jpg" loading="lazy">
         </div>
           <p style="text-align:center;margin-top:12px;">摄影、徒步、飞盘、摩旅...</p>
       </div>
@@ -576,7 +592,7 @@ function checkScroll() {
     }
   });
 
-  const sections = ['about', 'portfolio', 'case'];
+  const sections = ['about', 'portfolio', 'case','ME'];
   const navItems = document.querySelectorAll('.nav-item');
   let current = '';
   sections.forEach(id => {
