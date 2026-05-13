@@ -329,21 +329,13 @@
       cursor: pointer;
       z-index: 2;
     }
-    .side-item:hover .side-text {
+    .side-item.active .side-text {
       opacity: 1;
       transform: translateX(0);
     }
-    .side-item:hover .side-btn {
+    .side-item.active .side-btn {
       background: #222;
       color: #fff;
-    }
-    .side-item.active .side-text {
-      opacity: 1 !important;
-      transform: translateX(0) !important;
-    }
-    .side-item.active .side-btn {
-      background: #222 !important;
-      color: #fff !important;
     }
 
     /* 复制提示 */
@@ -605,13 +597,24 @@ document.querySelectorAll('.nav-item').forEach(item => {
   });
 });
 
-// 侧边栏复制功能
+// 侧边栏：点击展开，滑动自动关闭
 const sideItems = document.querySelectorAll('.side-item');
 const copyTip = document.getElementById('copyTip');
+let activeItem = null;
+
 sideItems.forEach(item => {
   item.querySelector('.side-btn').addEventListener('click', e => {
     e.stopPropagation();
-    item.classList.toggle('active');
+    // 切换开关
+    if (activeItem === item) {
+      item.classList.remove('active');
+      activeItem = null;
+    } else {
+      if (activeItem) activeItem.classList.remove('active');
+      item.classList.add('active');
+      activeItem = item;
+    }
+    // 复制
     const txt = item.getAttribute('data-copy');
     navigator.clipboard.writeText(txt).then(() => {
       copyTip.classList.add('show');
@@ -619,8 +622,13 @@ sideItems.forEach(item => {
     });
   });
 });
-document.addEventListener('click', () => {
-  sideItems.forEach(i => i.classList.remove('active'));
+
+// 滑动页面自动收起侧边文字
+window.addEventListener('scroll', () => {
+  if (activeItem) {
+    activeItem.classList.remove('active');
+    activeItem = null;
+  }
 });
 
 // 图片加载
