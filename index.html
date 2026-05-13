@@ -23,7 +23,7 @@
       margin: 0 auto;
     }
 
-    /* 全局动画 */
+    /* 全局滑动上浮动画 */
     .fade-up {
       opacity: 0;
       transform: translateY(40px);
@@ -78,6 +78,7 @@
       color: #222;
     }
 
+    /* 头部（取消动画，直接显示） */
     .header {
       text-align: center;
       margin-bottom: 50px;
@@ -103,6 +104,7 @@
       color: #666;
       text-align: center;
     }
+
     section {
       margin-bottom: 50px;
     }
@@ -392,13 +394,15 @@
 </div>
 
 <div class="container">
-  <div class="header fade-up">
+  <!-- 头部：去掉 fade-up，直接显示 -->
+  <div class="header">
     <img class="avatar" data-src="z1.jpg" src="z1_min.jpg" alt="头像">
     <h1>曾剑勋</h1>
     <div class="info-line" id="autoInfo"></div>
   </div>
 
-  <section id="about" class="fade-up">
+  <!-- 关于我：去掉外层 fade-up，里面时间轴保留动画 -->
+  <section id="about">
     <h2>关于我</h2>
     <div class="card" style="text-align:center;">
       <p>我是一名多维度选手，过去的时间里，我在不同的城市生活和工作。</p>
@@ -450,7 +454,7 @@
     </div>
 
     <h2>专业技能</h2>
-    <div class="card">
+    <div class="card fade-up">
       <div class="skill-list">
         <div class="skill-item">📝 办公：Microsoft Office、WPS Office、飞书/腾讯在线文档</div>
         <div class="skill-item">🎬 剪辑：Final Cut Pro、Adobe Premiere Pro、达芬奇、剪映</div>
