@@ -318,6 +318,25 @@
       color: #fff !important;
     }
 
+    /* 复制提示 */
+    .copy-tip {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+    }
+    .copy-tip.show {
+      opacity: 1;
+    }
+
     /* 手机适配 */
     @media (max-width: 600px) {
       .timeline::after {
@@ -360,6 +379,9 @@
   </style>
 </head>
 <body>
+
+<!-- 复制提示 -->
+<div class="copy-tip" id="copyTip">已复制到剪贴板</div>
 
 <div class="top-nav">
   <div class="nav-inner">
@@ -512,17 +534,17 @@
   </section>
 </div>
 
-<!-- 侧边栏 + 点击锁定功能 -->
+<!-- 侧边栏 悬浮+锁定+复制 -->
 <div class="side-contact">
-  <div class="side-item">
+  <div class="side-item" data-copy="18069433367">
     <div class="side-text">电话：180 6943 3367</div>
     <div class="side-btn"><i class="fas fa-phone"></i></div>
   </div>
-  <div class="side-item">
+  <div class="side-item" data-copy="zeng_jianxun@163.com">
     <div class="side-text">邮箱：zeng_jianxun@163.com</div>
     <div class="side-btn"><i class="fas fa-envelope"></i></div>
   </div>
-  <div class="side-item">
+  <div class="side-item" data-copy="nickaxxxxx">
     <div class="side-text">微信：nickaxxxxx</div>
     <div class="side-btn"><i class="fab fa-weixin"></i></div>
   </div>
@@ -583,15 +605,30 @@ navItems.forEach(item => {
   });
 });
 
-// ========== 侧边栏 点击锁定显示 ==========
+// ========== 侧边栏：悬浮+点击锁定+一键复制 ==========
 const sideItems = document.querySelectorAll('.side-item');
+const copyTip = document.getElementById('copyTip');
+
 sideItems.forEach(item => {
-  item.querySelector('.side-btn').addEventListener('click', (e) => {
+  const btn = item.querySelector('.side-btn');
+  
+  // 点击锁定 + 复制
+  btn.addEventListener('click', (e) => {
     e.stopPropagation();
+    // 切换锁定显示
     item.classList.toggle('active');
+    
+    // 复制内容
+    const copyText = item.getAttribute('data-copy');
+    navigator.clipboard.writeText(copyText).then(() => {
+      // 显示复制提示
+      copyTip.classList.add('show');
+      setTimeout(() => copyTip.classList.remove('show'), 1500);
+    });
   });
 });
-// 点击页面空白处关闭所有锁定
+
+// 点击空白处关闭所有锁定
 document.addEventListener('click', () => {
   sideItems.forEach(i => i.classList.remove('active'));
 });
