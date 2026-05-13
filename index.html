@@ -375,11 +375,12 @@
 </head>
 <body>
 
-<!-- 顶部固定分页导航 -->
+<!-- 顶部固定分页导航 → 已添加【案例】 -->
 <div class="top-nav">
   <div class="nav-inner">
     <div class="nav-item active" data-target="about">关于我</div>
     <div class="nav-item" data-target="portfolio">作品集</div>
+    <div class="nav-item" data-target="case">案例</div>
   </div>
 </div>
 
@@ -453,7 +454,7 @@
           <div class="skill-item">📝 办公：Microsoft Office、WPS Office、飞书/腾讯在线文档</div>
           <div class="skill-item">🎬 剪辑：Final Cut Pro、Adobe Premiere Pro、达芬奇、剪映</div>
           <div class="skill-item">📷 拍摄：索尼、富士、大疆、影石、iPhone</div>
-          <div class="skill-item">💻 正在学习：AI编程、视频</div>
+          <div class="skill-item">💻 正在学习：AI编程、AI视频</div>
         </div>
       </div>
     </section>
@@ -463,16 +464,6 @@
   <section id="portfolio">
     <section>
       <h2>作品集</h2>
-      <div class="card">
-      <h2>@ 今晚尽兴</h2>
-        <div class="grid-img">
-          <a href="http://xhslink.com/o/19e88pxWpBU" target="_blank"><img src="z2.jpg"></a>
-          <a href="http://xhslink.com/o/3fldChleYZQ" target="_blank"><img src="z3.jpg"></a>
-          <a href="http://xhslink.com/o/3DjG8mxnEYU" target="_blank"><img src="z4.jpg"></a>
-        </div>
-        <p style="text-align:center;margin-bottom:12px;"></p>
-        <p style="text-align:center;margin-bottom:12px;">多篇笔记浏览量破万，点赞收藏破千；上图是我自己账号的笔记，点击图片可跳转。</p>
-      </div>
     </section>
 
     <section>
@@ -504,7 +495,23 @@
         </div>
       </div>
     </section>
+  </section>
 
+  <!-- 社媒案例 单独区块 → 对应导航【案例】 -->
+  <section id="case">
+    <section>
+      <h2>社媒案例</h2>
+      <div class="card">
+        <h2 style="margin-bottom:15px;">@ 今晚尽兴</h2>
+        <div class="grid-img">
+          <a href="http://xhslink.com/o/19e88pxWpBU" target="_blank"><img src="z2.jpg"></a>
+          <a href="http://xhslink.com/o/3fldChleYZQ" target="_blank"><img src="z3.jpg"></a>
+          <a href="http://xhslink.com/o/3DjG8mxnEYU" target="_blank"><img src="z4.jpg"></a>
+        </div>
+        <p style="text-align:center;margin-top:12px;">多篇笔记浏览量破万，点赞收藏破千。展示案例为本人账号。</p>
+        <h2 style="text-align:center;">点击图片可直接跳转</h2>
+      </div>
+    </section>
   </section>
 
 </div>
@@ -516,7 +523,7 @@
   <div class="side-btn" data-type="wechat"><i class="fab fa-weixin"></i></div>
 </div>
 
-<!-- 联系方式弹窗（已移除关闭按钮） -->
+<!-- 联系方式弹窗（无关闭按钮） -->
 <div class="modal" id="contactModal">
   <div class="modal-content">
     <p id="contactText"></p>
@@ -524,7 +531,7 @@
 </div>
 
 <script>
-// 自动计算年龄、工龄 配置
+// 自动计算年龄、工龄
 const birthYear = 1997;
 const workStartYear = 2018;
 const liveCity = "杭州";
@@ -539,7 +546,7 @@ function setAutoInfo() {
 }
 setAutoInfo();
 
-// 滚动展出
+// 滚动高亮导航
 function checkScroll() {
   const items = document.querySelectorAll('.timeline-item');
   items.forEach(item => {
@@ -549,7 +556,7 @@ function checkScroll() {
     }
   });
 
-  const sections = ['about', 'portfolio'];
+  const sections = ['about', 'portfolio', 'case'];
   const navItems = document.querySelectorAll('.nav-item');
   let current = '';
   sections.forEach(id => {
@@ -569,7 +576,7 @@ function checkScroll() {
 window.addEventListener('scroll', checkScroll);
 window.addEventListener('load', checkScroll);
 
-// 导航点击
+// 导航点击跳转
 const navItems = document.querySelectorAll('.nav-item');
 navItems.forEach(item => {
   item.addEventListener('click', ()=>{
@@ -579,7 +586,7 @@ navItems.forEach(item => {
   });
 });
 
-// 弹窗
+// 弹窗功能
 const modal = document.getElementById('contactModal');
 const contactText = document.getElementById('contactText');
 const btns = document.querySelectorAll('.side-btn');
