@@ -79,21 +79,32 @@
       color: #222;
     }
 
-    /* 头部（取消动画，直接显示） */
-    .header {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-    .avatar {
+    /* 头像轮播容器 */
+    .avatar-box {
       width: 120px;
       height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
       margin: 0 auto 16px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
       border: 3px solid #fff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      display: block;
     }
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: all 0.6s ease;
+    }
+
+    /* 只保留 左右滑动 效果 */
+    .eff-slide { transform: translateX(0); opacity: 1; }
+    .eff-slide.out { transform: translateX(-30px); opacity: 0; }
+
     h1 {
       font-size: 28px;
       font-weight: 700;
@@ -318,27 +329,26 @@
       transition: all 0.3s ease;
       pointer-events: none;
     }
-        .side-btn {
-  width: 44px;
-  height: 44px;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  color: #222;
-  cursor: pointer;
-  z-index: 2;
-  transition: all 0.25s ease;
-}
-/* 鼠标悬浮：上浮+变色 */
-.side-btn:hover {
-  transform: translateY(-5px) scale(1.05);
-  background: #222;
-  color: #fff;
-}
+    .side-btn {
+      width: 44px;
+      height: 44px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #222;
+      cursor: pointer;
+      z-index: 2;
+      transition: all 0.25s ease;
+    }
+    .side-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      background: #222;
+      color: #fff;
+    }
     .side-item.active .side-text {
       opacity: 1;
       transform: translateX(0);
@@ -402,14 +412,14 @@
 </div>
 
 <div class="container">
-  <!-- 头部：去掉 fade-up，直接显示 -->
   <div class="header">
-    <img class="avatar" data-src="z1.jpg" src="z1_min.jpg" alt="头像">
+    <div class="avatar-box">
+      <img class="avatar eff-slide" id="avatarImg" src="txp_1.jpg" alt="头像">
+    </div>
     <h1>曾剑勋</h1>
     <div class="info-line" id="autoInfo"></div>
   </div>
 
-  <!-- 关于我：去掉外层 fade-up，里面时间轴保留动画 -->
   <section id="about">
     <h2>关于我</h2>
     <div class="card" style="text-align:center;">
@@ -568,7 +578,6 @@ setAutoInfo();
 
 // 滚动动画 + 顶部导航自动高亮
 function checkScroll() {
-  // 板块上浮动画
   const fadeEls = document.querySelectorAll('.fade-up');
   fadeEls.forEach(item => {
     const rect = item.getBoundingClientRect();
@@ -577,7 +586,6 @@ function checkScroll() {
     }
   });
 
-  // 顶部导航自动跟随
   const sections = ['about', 'portfolio', 'case', 'ME'];
   const navItems = document.querySelectorAll('.nav-item');
   let current = '';
@@ -615,7 +623,6 @@ let activeItem = null;
 sideItems.forEach(item => {
   item.querySelector('.side-btn').addEventListener('click', e => {
     e.stopPropagation();
-    // 切换开关
     if (activeItem === item) {
       item.classList.remove('active');
       activeItem = null;
@@ -624,7 +631,6 @@ sideItems.forEach(item => {
       item.classList.add('active');
       activeItem = item;
     }
-    // 复制
     const txt = item.getAttribute('data-copy');
     navigator.clipboard.writeText(txt).then(() => {
       copyTip.classList.add('show');
@@ -633,7 +639,6 @@ sideItems.forEach(item => {
   });
 });
 
-// 滑动页面自动收起侧边文字
 window.addEventListener('scroll', () => {
   if (activeItem) {
     activeItem.classList.remove('active');
@@ -650,6 +655,25 @@ window.addEventListener('load', () => {
     }, idx * 80);
   });
 });
+
+// 头像轮播 固定左右滑动 3秒切换
+const avatarImages = ["txp_1.jpg", "txp_2.jpg", "txp_3.jpg"];
+let avatarIndex = 0;
+const avatarImg = document.getElementById('avatarImg');
+
+function changeAvatar() {
+  avatarImg.classList.add('out');
+  setTimeout(() => {
+    avatarIndex = (avatarIndex + 1) % avatarImages.length;
+    avatarImg.src = avatarImages[avatarIndex];
+    setTimeout(() => {
+      avatarImg.classList.remove('out');
+    }, 300);
+  }, 300);
+}
+
+// 3秒自动轮播
+setInterval(changeAvatar, 3000);
 </script>
 
 </body>
