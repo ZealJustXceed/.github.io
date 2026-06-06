@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <title>ZealJustXceed介绍</title>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #fafafa;
+      color: #222;
+      line-height: 1.7;
+      padding: 100px 20px 40px;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* 全局滑动上浮动画 */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s ease;
+    }
+    .fade-up.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 顶部导航 */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #eee;
+    }
+    .nav-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 16px 0;
+    }
+    .nav-item {
+      font-size: 15px;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      white-space: nowrap;
+    }
+    .nav-item.active {
+      color: #222;
+      font-weight: 500;
+    }
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #222;
+    }
+    .nav-item:hover {
+      color: #222;
+    }
+
+    /* 头像轮播容器 */
+    .avatar-box {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      border: 3px solid #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: all 0.6s ease;
+    }
+
+    /* 只保留 左右滑动 效果 */
+    .eff-slide { transform: translateX(0); opacity: 1; }
+    .eff-slide.out { transform: translateX(-30px); opacity: 0; }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .info-line {
+      font-size: 16px;
+      color: #666;
+      text-align: center;
+    }
+
+    section {
+      margin-bottom: 50px;
+    }
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: #fff;
+      padding: 18px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 12px;
+    }
+
+    /* 桌面端时间轴 - 左右交替 */
+    @media (min-width: 601px) {
+      .timeline {
+        position: relative;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .timeline::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        background-color: #ddd;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -1px;
+      }
+      .timeline-item {
+        padding: 15px 30px;
+        position: relative;
+        width: 50%;
+      }
+      .timeline-item::after {
+        content: '';
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        background: #222;
+        border-radius: 50%;
+        top: 24px;
+        z-index: 1;
+      }
+      .timeline-left {
+        left: 0;
+        text-align: right;
+      }
+      .timeline-left::after {
+        right: -7px;
+      }
+      .timeline-right {
+        left: 50%;
+      }
+      .timeline-right::after {
+        left: -7px;
+      }
+      .timeline-time {
+        position: absolute;
+        top: 22px;
+        font-size: 14px;
+        color: #666;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+      .timeline-left .timeline-time {
+        left: calc(100% + 22px);
+      }
+      .timeline-right .timeline-time {
+        right: calc(100% + 22px);
+      }
+    }
+
+    /* 手机端时间轴 - 左侧竖线+圆点 */
+    @media (max-width: 600px) {
+      .timeline {
+        position: relative;
+        padding-left: 20px;
+      }
+      .timeline::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: #ddd;
+      }
+      .timeline-item {
+        width: 100%;
+        padding: 0 0 16px 20px;
+        position: relative;
+      }
+      .timeline-item::after {
+        content: '';
+        position: absolute;
+        left: -7px;
+        top: 20px;
+        width: 14px;
+        height: 14px;
+        background: #222;
+        border-radius: 50%;
+        z-index: 1;
+      }
+      .timeline-time {
+        display: block !important;
+        visibility: visible !important;
+        position: static !important;
+        font-size: 14px;
+        color: #999;
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+    }
+
+    .timeline-icon {
+      font-size: 18px;
+      color: #444;
+      margin-right: 8px;
+    }
+    .main-title {
+      font-size: 16px;
+      color: #111;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .sub-desc {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+      padding: 0 10px;
+    }
+    .skill-item {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .grid-img {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .grid-img img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+      transition: all 0.3s ease;
+    }
+    .grid-img img:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    a {
+      color: #222;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* 侧边联系方式 */
+    .side-contact {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 999;
+    }
+    .side-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+    }
+    .side-text {
+      position: absolute;
+      right: 50px;
+      background: #222;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .side-btn {
+      width: 44px;
+      height: 44px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #222;
+      cursor: pointer;
+      z-index: 2;
+      transition: all 0.25s ease;
+    }
+    .side-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      background: #222;
+      color: #fff;
+    }
+    .side-item.active .side-text {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .side-item.active .side-btn {
+      background: #222;
+      color: #fff;
+    }
+
+    /* 复制提示 */
+    .copy-tip {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+    }
+    .copy-tip.show {
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 80px 12px 20px;
+      }
+      .grid-img {
+        gap: 6px;
+      }
+      .side-contact {
+        right: 10px;
+      }
+      .side-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+      }
+      .nav-inner {
+        gap: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="copy-tip" id="copyTip">已复制到剪贴板</div>
+
+<div class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-item active" data-target="about">关于我</div>
+    <div class="nav-item" data-target="portfolio">作品集</div>
+    <div class="nav-item" data-target="case">案例</div>
+    <div class="nav-item" data-target="ME">ME</div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="header">
+    <div class="avatar-box">
+      <img class="avatar eff-slide" id="avatarImg" src="txp_1.jpg" alt="头像">
+    </div>
+    <h1>曾剑勋</h1>
+    <div class="info-line" id="autoInfo"></div>
+  </div>
+
+  <section id="about">
+    <h2>关于我</h2>
+    <div class="card" style="text-align:center;">
+      <p>我是一名多维度选手，过去的时间里，我在不同的城市生活和工作。</p>
+      <p>我过往工作涉及多个行业和岗位，从基层做起，脚踏实地。</p>
+      <p>我专注于自身成长，以抵抗时代巨轮的碾压。</p>
+      <p>我热爱生活，性格外向，不内耗。</p>
+    </div>
+
+    <h2>工作经历</h2>
+    <div class="timeline">
+      <div class="timeline-item fade-up timeline-left">
+        <div class="timeline-time">2025 - 2026</div>
+        <div class="card">
+          <div class="main-title">
+            <i class="fas fa-video timeline-icon"></i>博主助理 兼职 
+          </div>
+          <div class="sub-desc">摄影、摄像、剪辑、修图、撰写文案、数据分析、活动策划、社媒分发、粉丝互动</div>
+        </div>
+      </div>
+      <div class="timeline-item fade-up timeline-right">
+        <div class="timeline-time">2021 - 2024</div>
+        <div class="card">
+          <div class="main-title">
+            <i class="fas fa-mug-hot timeline-icon"></i>店长 niko and coffee
+          </div>
+          <div class="sub-desc">意式、手冲、特调、研发新品、成本核算、库存管理、经营分析、新店筹备、活动策划、门店运营。</div>
+        </div>
+      </div>
+      <div class="timeline-item fade-up timeline-left">
+        <div class="timeline-time">2019 - 2021</div>
+        <div class="card">
+          <div class="main-title">
+            <i class="fas fa-handshake timeline-icon"></i>销售 北京迈迪生
+          </div>
+          <div class="sub-desc">开发新客、挖掘需求、收集竞品、撰写标书、商务谈判、合同拟定、回款跟进、维护客情</div>
+        </div>
+      </div>
+      <div class="timeline-item fade-up timeline-right">
+        <div class="timeline-time">2018 - 2019</div>
+        <div class="card">
+          <div class="main-title">
+            <i class="fas fa-headset timeline-icon"></i>客服 深圳阿卡索
+          </div>
+          <div class="sub-desc">维护客情、处理客诉、收集用户反馈、提高用户满意度</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>专业技能</h2>
+    <div class="card fade-up">
+      <div class="skill-list">
+        <div class="skill-item">📝 办公：Microsoft Office、WPS Office、飞书/腾讯在线文档</div>
+        <div class="skill-item">🎬 剪辑：Final Cut Pro、Adobe Premiere Pro、达芬奇、剪映</div>
+        <div class="skill-item">📷 拍摄：索尼、富士、大疆、影石、iPhone</div>
+        <div class="skill-item">💻 正在学习：AI编程、AI视频</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="portfolio" class="fade-up">
+    <h2>作品集</h2>
+    <div class="card">
+      <p style="text-align:center;margin-bottom:10px;"><strong>人物作品</strong></p>
+      <div class="grid-img">
+        <img data-src="z5.jpg" src="z5_min.jpg" alt="">
+        <img data-src="z7.jpg" src="z7_min.jpg" alt="">
+        <img data-src="z9.jpg" src="z9_min.jpg" alt="">
+        <img data-src="z6.jpg" src="z6_min.jpg" alt="">
+        <img data-src="z8.jpg" src="z8_min.jpg" alt="">
+        <img data-src="z10.jpg" src="z10_min.jpg" alt="">
+      </div>
+    </div>
+    <div class="card">
+      <p style="text-align:center;margin-bottom:10px;"><strong>食物作品</strong></p>
+      <div class="grid-img">
+        <img data-src="z11.jpg" src="z11_min.jpg" alt="">
+        <img data-src="z12.jpg" src="z12_min.jpg" alt="">
+        <img data-src="z13.jpg" src="z13_min.jpg" alt="">
+        <img data-src="z14.jpg" src="z14_min.jpg" alt="">
+        <img data-src="z15.jpg" src="z15_min.jpg" alt="">
+        <img data-src="z16.jpg" src="z16_min.jpg" alt="">
+      </div>
+    </div>
+    <div class="card">
+      <p style="text-align:center;margin-bottom:10px;"><strong>活动作品</strong></p>
+      <div class="grid-img">
+        <img data-src="z17.jpg" src="z17_min.jpg" alt="">
+        <img data-src="z18.jpg" src="z18_min.jpg" alt="">
+        <img data-src="z19.jpg" src="z19_min.jpg" alt="">
+        <img data-src="z20.jpg" src="z20_min.jpg" alt="">
+        <img data-src="z21.jpg" src="z21_min.jpg" alt="">
+        <img data-src="z22.jpg" src="z22_min.jpg" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section id="case" class="fade-up">
+    <h2>社媒案例</h2>
+    <div class="card">
+      <h2 style="margin-bottom:15px;">@ 今晚尽兴</h2>
+      <div class="grid-img">
+        <a href="http://xhslink.com/o/19e88pxWpBU" target="_blank"><img data-src="z2.jpg" src="z2_min.jpg" alt=""></a>
+        <a href="http://xhslink.com/o/3fldChleYZQ" target="_blank"><img data-src="z3.jpg" src="z3_min.jpg" alt=""></a>
+        <a href="http://xhslink.com/o/3DjG8mxnEYU" target="_blank"><img data-src="z4.jpg" src="z4_min.jpg" alt=""></a>
+      </div>
+      <p style="text-align:center;margin-top:12px;">为新账号提供具有话题性选题，以提高互动量。</p>
+      <p style="text-align:center;margin-top:12px;">进一步为账号增加自然流量，依据平台规则逐步加大笔记曝光度。</p>
+      <p style="text-align:center;margin-top:12px;">多条笔记达成浏览量1万+，点赞收藏1千+，评论数200+</p>
+      <h2 style="text-align:center;">点击图片可直接跳转</h2>
+    </div>
+  </section>
+
+  <section id="ME" class="fade-up">
+    <h2>我的生活</h2>
+    <div class="card">
+      <div class="grid-img">
+        <img data-src="z23.jpg" src="z23_min.jpg" alt="">
+        <img data-src="z24.jpg" src="z24_min.jpg" alt="">
+        <img data-src="z25.jpg" src="z25_min.jpg" alt="">
+        <img data-src="z26.jpg" src="z26_min.jpg" alt="">
+        <img data-src="z27.jpg" src="z27_min.jpg" alt="">
+        <img data-src="z28.jpg" src="z28_min.jpg" alt="">
+      </div>
+      <p style="text-align:center;margin-top:12px;">摄影、徒步、飞盘、摩旅...</p>
+    </div>
+  </section>
+</div>
+
+<div class="side-contact">
+  <div class="side-item" data-copy="18069433367">
+    <div class="side-text">电话：180 6943 3367</div>
+    <div class="side-btn"><i class="fas fa-phone"></i></div>
+  </div>
+  <div class="side-item" data-copy="zeng_jianxun@163.com">
+    <div class="side-text">邮箱：zeng_jianxun@163.com</div>
+    <div class="side-btn"><i class="fas fa-envelope"></i></div>
+  </div>
+  <div class="side-item" data-copy="nickaxxxxx">
+    <div class="side-text">微信：nickaxxxxx</div>
+    <div class="side-btn"><i class="fab fa-weixin"></i></div>
+  </div>
+</div>
+
+<script>
+// 年龄自动计算
+const birthYear = 1997;
+const workStartYear = 2018;
+const liveCity = "杭州";
+function setAutoInfo() {
+  const now = new Date();
+  const currYear = now.getFullYear();
+  const age = currYear - birthYear;
+  const workYear = currYear - workStartYear;
+  document.getElementById('autoInfo').innerText = `${age}岁 · 工龄${workYear}年 · base${liveCity}`;
+}
+setAutoInfo();
+
+// 滚动动画 + 顶部导航自动高亮
+function checkScroll() {
+  const fadeEls = document.querySelectorAll('.fade-up');
+  fadeEls.forEach(item => {
+    const rect = item.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85) {
+      item.classList.add('show');
+    }
+  });
+
+  const sections = ['about', 'portfolio', 'case', 'ME'];
+  const navItems = document.querySelectorAll('.nav-item');
+  let current = '';
+  sections.forEach(id => {
+    const section = document.getElementById(id);
+    const rect = section.getBoundingClientRect();
+    if (rect.top <= 150) {
+      current = id;
+    }
+  });
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('data-target') === current) {
+      item.classList.add('active');
+    }
+  });
+}
+
+window.addEventListener('scroll', checkScroll);
+window.addEventListener('load', checkScroll);
+
+// 导航点击跳转
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const target = item.getAttribute('data-target');
+    document.getElementById(target).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// 侧边栏：点击展开，滑动自动关闭
+const sideItems = document.querySelectorAll('.side-item');
+const copyTip = document.getElementById('copyTip');
+let activeItem = null;
+
+sideItems.forEach(item => {
+  item.querySelector('.side-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    if (activeItem === item) {
+      item.classList.remove('active');
+      activeItem = null;
+    } else {
+      if (activeItem) activeItem.classList.remove('active');
+      item.classList.add('active');
+      activeItem = item;
+    }
+    const txt = item.getAttribute('data-copy');
+    navigator.clipboard.writeText(txt).then(() => {
+      copyTip.classList.add('show');
+      setTimeout(() => copyTip.classList.remove('show'), 1500);
+    });
+  });
+});
+
+window.addEventListener('scroll', () => {
+  if (activeItem) {
+    activeItem.classList.remove('active');
+    activeItem = null;
+  }
+});
+
+// 图片加载
+window.addEventListener('load', () => {
+  const imgs = document.querySelectorAll('img[data-src]');
+  imgs.forEach((img, idx) => {
+    setTimeout(() => {
+      img.src = img.dataset.src;
+    }, idx * 80);
+  });
+});
+
+// 头像轮播 固定左右滑动 3秒切换
+const avatarImages = ["txp_1.jpg", "txp_2.jpg"];
+let avatarIndex = 0;
+const avatarImg = document.getElementById('avatarImg');
+
+function changeAvatar() {
+  avatarImg.classList.add('out');
+  setTimeout(() => {
+    avatarIndex = (avatarIndex + 1) % avatarImages.length;
+    avatarImg.src = avatarImages[avatarIndex];
+    setTimeout(() => {
+      avatarImg.classList.remove('out');
+    }, 300);
+  }, 300);
+}
+
+// 3秒自动轮播
+setInterval(changeAvatar, 3000);
+</script>
+
+</body>
+</html>
