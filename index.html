@@ -1155,7 +1155,16 @@ a {
 }
 
 @media (max-width: 900px) {
-  .floating-contact { display: none; }
+  .floating-contact {
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    bottom: auto;
+    left: auto;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .float-btn { width: 46px; height: 46px; }
 }
 
 /* ========== MOBILE H5 OPTIMIZATIONS ========== */
@@ -1639,9 +1648,9 @@ a {
 
 <!-- ============ FLOATING CONTACT BAR ============ -->
 <div class="floating-contact">
-  <div class="float-btn" data-copy="zeng_jianxun@163.com">
+  <div class="float-btn" data-copy="ZealJustXceed@163.com">
     <i class="fas fa-envelope"></i>
-    <span class="float-tooltip">zeng_jianxun@163.com</span>
+    <span class="float-tooltip">ZealJustXceed@163.com</span>
   </div>
   <div class="float-btn" data-copy="nickaxxxxx">
     <i class="fab fa-weixin"></i>
@@ -2034,6 +2043,9 @@ a {
 
   document.querySelectorAll('[data-copy]').forEach(function(el) {
     el.addEventListener('click', function() {
+      // 清除滚动时设置的内联 opacity，让 CSS :hover 重新生效
+      const tip = this.querySelector('.float-tooltip');
+      if (tip) tip.style.opacity = '';
       const text = this.getAttribute('data-copy');
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(showToast).catch(fallbackCopy);
@@ -2042,6 +2054,13 @@ a {
       }
     });
   });
+
+  // 滚动时自动隐藏联系方式 tooltip
+  window.addEventListener('scroll', function() {
+    document.querySelectorAll('.float-tooltip').forEach(function(tip) {
+      tip.style.opacity = '0';
+    });
+  }, { passive: true });
 
   function fallbackCopy(text) {
     const ta = document.createElement('textarea');
