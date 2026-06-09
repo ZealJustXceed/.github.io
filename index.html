@@ -316,6 +316,27 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 12px;
 }
 
+.typeword {
+  color: var(--accent);
+  font-weight: 500;
+  display: inline;
+}
+
+.typeword-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cursorBlink 0.7s steps(1) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
 .hero-slogan {
   font-family: var(--font-heading);
   font-size: clamp(0.9rem, 1.5vw, 1.05rem);
@@ -1091,7 +1112,7 @@ a { color: inherit; text-decoration: none; }
   <div class="hero-name-wrapper reveal" id="heroNameWrapper">
     <h1 class="hero-name" id="heroName">ZealJustXceed</h1>
   </div>
-  <p class="hero-subtitle reveal">用感官记录，用画面表达</p>
+  <p class="hero-subtitle reveal">我在做<span class="typeword" id="typeWord">品牌IP</span><span class="typeword-cursor" id="typeCursor"></span>运营</p>
   <p class="hero-slogan reveal">在创意与策略之间，创造价值。</p>
   <p class="hero-location reveal">Based in 杭州</p>
   <div class="scroll-hint">
@@ -1688,6 +1709,54 @@ setTimeout(() => {
   scheduleSingleGlitch(1); // 剑
   scheduleSingleGlitch(2); // 勋
 }, 1200);
+
+  // ===== TYPEWRITER: 新媒体 → 品牌IP → 零售门店 循环打字效果 =====
+  var typeWordEl = document.getElementById('typeWord');
+  var typeWords = ['新媒体', '零售门店', '品牌IP'];
+  var typeIndex = 0;
+  var typeCharSpeed = 120;   // 逐字打出速度
+  var typeEraseSpeed = 80;   // 逐字擦除速度
+  var typePauseShow = 2000;  // 显示完整词后停顿
+  var typePauseErase = 400;  // 擦完后停顿
+
+  function typeNextWord() {
+    var word = typeWords[typeIndex];
+    var currentText = typeWordEl.textContent;
+    // 如果当前有文字，先逐字擦除
+    if (currentText.length > 0) {
+      eraseChar(word);
+    } else {
+      // 从空开始打字
+      typeChar(word, 0);
+    }
+  }
+
+  function typeChar(word, pos) {
+    if (pos <= word.length) {
+      typeWordEl.textContent = word.slice(0, pos);
+      setTimeout(function() { typeChar(word, pos + 1); }, typeCharSpeed);
+    } else {
+      // 打完，停顿后进入下一轮擦除
+      setTimeout(function() {
+        typeIndex = (typeIndex + 1) % typeWords.length;
+        eraseChar(word);
+      }, typePauseShow);
+    }
+  }
+
+  function eraseChar(word) {
+    var current = typeWordEl.textContent;
+    if (current.length > 0) {
+      typeWordEl.textContent = current.slice(0, -1);
+      setTimeout(function() { eraseChar(word); }, typeEraseSpeed);
+    } else {
+      // 擦完，停顿后打下一个词
+      setTimeout(typeNextWord, typePauseErase);
+    }
+  }
+
+  // 启动打字循环
+  setTimeout(typeNextWord, 2500);
 
   // ===== NAV TOGGLE =====
   var navToggle = document.getElementById('navToggle');
